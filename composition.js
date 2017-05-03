@@ -23,6 +23,7 @@ class CookieFactory {
           let other_cookies = new OtherCookies(cookiesList[i]);
           batch_of_cookies.push(other_cookies);
       }
+      batch_of_cookies[i].bake();
     }
     return batch_of_cookies;
   }
