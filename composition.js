@@ -16,25 +16,34 @@ class Cookie {
 class Ingredients {
   constructor(name) {
     if (name === 'peanut butter') {
-      this.flour = 1;
-      this.sugar = 2;
-      this.cinnamon = 1;
-      this.butter =0.05;
-      this.peanutButter = 2;
+      this.Flour = 1;
+      this.Sugar = 2;
+      this.Cinnamon = 1;
+      this.Butter =0.05;
+      this.PeanutButter = 2;
     } else if (name === 'chocolate chip') {
-      this.sugar = 1;
-      this.butter =0.05;
-      this.chocoChips= 1;
+      this.Sugar = 1;
+      this.Butter =0.05;
+      this.ChocoChips= 1;
     } else if (name === 'chocolate cheese') {
-      this.flour = 1;
-      this.sugar = 2;
-      this.cinnamon = 2;
-      this.butter =0.06;
+      this.Flour = 1;
+      this.Sugar = 2;
+      this.Cinnamon = 2;
+      this.Butter =0.06;
     } else if (name === 'chocolate butter') {
-      // this.sugar=0;
-      this.butter = 0.05;
-      this.glutenFreeFlour= 1;
-      this.flavorAdder = 1;
+      this.Butter = 0.05;
+      this.GlutenFreeFlour= 1;
+      this.FlavorAdder = 1;
+    } else if (name === 'chocolate chips crumbled') {
+      this.Flour = 1;
+      this.Butter = 0.05;
+      this.ChocoChips = 1;
+      this.Sugar = 1;
+    } else if (name === 'peanut butter crumbled') {
+      this.Flour = 1;
+      this.Butter = 0.05;
+      this.PeanutButter = 2;
+      this.Sugar = 2;
     }
   }
 }
@@ -60,6 +69,20 @@ class OtherCookie extends Cookie {
   }
 }
 
+class ChocholateChipCrumble extends Cookie {
+  constructor(name) {
+    super(name);
+    this.chocolateChipCrumble_count = 300;
+  }
+}
+
+class PeanutButterCrumble extends Cookie {
+  constructor(name) {
+    super(name);
+    this.butterCrumble_count = 300;
+  }
+}
+
 class CookieFactory {
   static create(options) {
     let cookie = null;
@@ -67,6 +90,10 @@ class CookieFactory {
       return new PeanutButter(options);
     } else if (options === 'chocolate chip') {
       return new ChocholateChip(options);
+    } else if (options === 'chocolate chips crumbled') {
+      return new ChocholateChipCrumble(options);
+    } else if (options === 'peanut butter crumbled') {
+      return new PeanutButterCrumble(options);
     } else {
       return new OtherCookie(options);
     }
@@ -75,7 +102,7 @@ class CookieFactory {
   static cookieRecommendation(hari, kue) {
     let list = [];
     for (let i=0; i<kue.length; i++) {
-      if (kue[i].ingredients.sugar === undefined) {
+      if (kue[i].ingredients.Sugar === undefined) {
         list.push(kue[i].name);
       }
     }
