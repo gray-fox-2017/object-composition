@@ -31,6 +31,7 @@ class Ingredients {
       this.cinnamon = 2;
       this.butter =0.06;
     } else if (name === 'chocolate butter') {
+      // this.sugar=0;
       this.butter = 0.05;
       this.glutenFreeFlour= 1;
       this.flavorAdder = 1;
@@ -74,7 +75,7 @@ class CookieFactory {
   static cookieRecommendation(hari, kue) {
     let list = [];
     for (let i=0; i<kue.length; i++) {
-      if (kue[i].ingredients.sugar>0) {
+      if (kue[i].ingredients.sugar === undefined) {
         list.push(kue[i].name);
       }
     }
