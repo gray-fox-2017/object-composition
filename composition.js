@@ -6,6 +6,8 @@ class CookieFactory {
     var cookiesList = fs.readFileSync(options,'utf8').split("\n");
     // handling whitespace
     cookiesList.pop();
+    
+    // batch of cookies
     let batch_of_cookies = [];
     for (let i=0; i<cookiesList.length;i++){
       switch(cookiesList[i]) {
@@ -22,6 +24,7 @@ class CookieFactory {
           batch_of_cookies.push(other_cookies);
       }
     }
+    console.log(batch_of_cookies);
     return batch_of_cookies;
   }
 }
@@ -30,7 +33,13 @@ class Cookie {
   constructor (name) {
     this.name = name;
     this.status = 'mentah';
-    this.ingredients = [];
+    this.amount = 0;
+    this.has_sugar = true;
+    this.ingredients = new Ingredients(this);
+    this.has_sugar = this.ingredients.is_there_sugar();
+    //console.log(this.ingredients.ingredient);
+    //this.ingredients = this.ingredients.ingredient;
+    this.ingredients = this.ingredients.obtainIngredients();
   }
   bake() {
     this.status = 'selesai dimasak';
@@ -40,38 +49,58 @@ class Cookie {
 class PeanutButter extends Cookie {
   constructor(name) {
     super(name);
-    this.peanut_count = 100;
+    this.amount = 100;
   }
 }
 
 class ChocolateChip extends Cookie {
   constructor(name) {
     super(name);
-    this.choc_chip_count = 200;
+    this.amount = 200;
   }
 }
 
 class OtherCookies extends Cookie {
   constructor(name) {
     super(name);
-    this.other_count = 150;
+    this.amount = 150;
   }
 }
 
 class Ingredients {
-  constructor(file) {
+  constructor(options) {
+    this.name = options['name'];
+    this.ingredient = this.obtainIngredients();
+  }
+
+  obtainIngredients () {
+    // read ingredient file
     var fs = require ('fs')
-    var ingredientList = fs.readFileSync(file,'utf8').split("\n");
+    var ingredientList = fs.readFileSync('ingredients.txt','utf8').split("\n");
+    
     // handling whitespace
     ingredientList.pop();
-    for (let i=0;i<ingredientList.length;i++){
+
+    // check the location of ingredients for the cookie
+    for (let i=0;i<ingredientList.length;i++) {
       ingredientList[i] = ingredientList[i].split("=");
-      ingredientList[i][1] = ingredientList[i][1].split(", ");
-      console.log(ingredientList[i].includes('sugar'));
+      if (ingredientList[i][0] === this.name) var cookieIndex = i;
     }
-    console.log(ingredientList);
+
+    // move the ingredients to an object
+    let ingredient = {};
+
+    ingredientList[cookieIndex][1] = ingredientList[cookieIndex][1].split(", ");
+    for (let j=0; j<ingredientList[cookieIndex][1].length; j++) {
+      ingredientList[cookieIndex][1][j] = ingredientList[cookieIndex][1][j].split(": ");
+      ingredient[ingredientList[cookieIndex][1][j][0]] = ingredientList[cookieIndex][1][j][1];
+    }
+
+    return ingredient;
+  }
+
+  is_there_sugar() {
+    return (!this.ingredient['sugar']) ? false : true;
   }
 }
-let batch_of_cookies = CookieFactory.create('cookies.txt');
-console.log(batch_of_cookies);
-let ingredientList = new Ingredients('ingredients.txt');
+  let batch_of_cookies = CookieFactory.create('cookies.txt');
