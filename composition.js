@@ -7,17 +7,27 @@ class CookieFactory {
     let arrObjCookies = []
     for (let i = 0; i < cookieNames.length; i++) {
       if (cookieNames[i] == "peanut butter") {
-        arrObjCookies.push(new PeanutButter(cookieNames[i], ingredientNames[i]));
+        arrObjCookies.push(new PeanutButter(cookieNames[i], ingredientNames[i] ));
       } else if (cookieNames[i] == "chocolate chip") {
-        arrObjCookies.push(new ChocolateChip(cookieNames[i], ingredientNames[i]));
+        arrObjCookies.push(new ChocolateChip(cookieNames[i], ingredientNames[i] ));
       } else {
-        arrObjCookies.push(new OtherCookies(cookieNames[i], ingredientNames[i]));
+        arrObjCookies.push(new OtherCookies(cookieNames[i], ingredientNames[i] ));
       }
     }
     return arrObjCookies;
   }
 
   static cookieRecommendation(dayName, cookieObj) {
+    let freeSugar = [];
+    for (let i = 0; i < cookieObj.length; i++) {
+      if (cookieObj[i].ingredient.has_sugar) {
+        freeSugar.push(cookieObj[i]);
+      }
+    }
+    return freeSugar
+    // return freeSugar;
+
+
 
   }
   // define other methods as needed
@@ -103,7 +113,34 @@ function parseIngredient(fileName) {
       ingredientArr[i][j] = ingredientArr[i][j].trim();
     }
   }
-  return ingredientArr;
+
+  let result = [];
+  for (let i = 0; i < ingredientArr.length; i++) {
+    let obj = {}
+    nameTmpArr = [];
+    amountTmpArr = [];
+    for (let j = 0; j < ingredientArr[i].length; j++) {
+      nameTmpArr.push(ingredientArr[i][j].split(":")[1].trim());
+      amountTmpArr.push(ingredientArr[i][j].split(":")[0].trim());
+    }
+    obj.name = nameTmpArr;
+    obj.amount = amountTmpArr;
+    for (j = 1; j < obj.name.length; j++) {
+      if (obj.name[j] == 'sugar') {
+        obj.has_sugar = true;
+        break;
+      } else {
+        obj.has_sugar = false;
+      }
+    }
+    result.push(obj);
+  }
+  return result;
+
+  // let ingredientObj = {}
+  // for (let i = 0; i < ingredientArr.length; i++) {
+  //   ingredientArr[0].split(":")
+  // }
 
   // let amount = [];
   // let ingredientName = [];
@@ -143,26 +180,12 @@ function parseIngredientAmount(fileName) {
 }
 
 let file = "bahan.txt";
-// console.log(parseIngredient(file)[0]);
 
-let batchCookies = CookieFactory.create("bahan.txt")
-console.log(batchCookies);
+let batchCookies = CookieFactory.create(file)
 
-// let ingredients = parseIngredient(file);
-//
-// let file = "bahan.txt"
-// let cookieNames = parseCookieName(file);
-// let arrObjCookies = []
-// for (let i = 0; i < cookieNames.length; i++) {
-//   if (cookieNames[i] == "peanut butter") {
-//     arrObjCookies.push(new PeanutButter(cookieNames[i]));
-//   } else if (cookieNames[i] == "chocolate chip") {
-//     arrObjCookies.push(new ChocolateChip(cookieNames[i]));
-//   } else {
-//     arrObjCookies.push(new OtherCookies(cookieNames[i]));
-//   }
-// }
 
-// console.log(arrObjCookies);
-
-// console.log(CookieFactory.create(new PeanutButter()));
+let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batchCookies);
+console.log("sugar free cakes are :\n");
+for (let i = 0; i < sugarFreeFoods.length; i++) {
+  console.log(sugarFreeFoods[i].name);
+}
