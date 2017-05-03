@@ -25,10 +25,6 @@ class CookieFactory {
       }
     }
     return freeSugar
-    // return freeSugar;
-
-
-
   }
   // define other methods as needed
 }
