@@ -1,10 +1,10 @@
 "use strict";
 
 class Cookie {
-  constructor(name) {
-    this.name = name;
+  constructor(arr) {
+    this.name = arr[0];
     this.status = "mentah";
-    this.ingredients = new Ingredients(name);
+    this.ingredients = (new Ingredients(arr[1])).list;
     ;
   }
 
@@ -14,88 +14,87 @@ class Cookie {
 }
 
 class Ingredients {
-  constructor(name) {
-    if (name === 'peanut butter') {
-      this.Flour = 1;
-      this.Sugar = 2;
-      this.Cinnamon = 1;
-      this.Butter = 0.05;
-      this.PeanutButter = 2;
-    } else if (name === 'chocolate chip') {
-      this.Sugar = 1;
-      this.Butter = 0.05;
-      this.ChocoChips= 1;
-    } else if (name === 'chocolate cheese') {
-      this.Flour = 1;
-      this.Sugar = 2;
-      this.Cinnamon = 2;
-      this.Butter = 0.06;
-    } else if (name === 'chocolate butter') {
-      this.Butter = 0.05;
-      this.GlutenFreeFlour = 1;
-      this.FlavorAdder = 1;
-    } else if (name === 'chocolate chips crumbled') {
-      this.Flour = 1;
-      this.Butter = 0.05;
-      this.ChocoChips = 1;
-      this.Sugar = 1;
-    } else if (name === 'peanut butter crumbled') {
-      this.Flour = 1;
-      this.Butter = 0.05;
-      this.PeanutButter = 2;
-      this.Sugar = 2;
+  constructor(arr) {
+    this.bah = arr.split(',');
+    this.bahan = this.bah.map(x => x.split(':'));
+  }
+
+  get list() {
+    let bahanPertama = this.bahan.join(',');
+    let bahan = bahanPertama.split(',')
+    let output =[]
+
+    let satuan = [];
+    let jumlah = [];
+
+    let list = {};
+
+    for(let i=0; i<bahan.length;i++) {
+      if (i%2 === 0) {
+        jumlah.push(bahan[i])
+      } else {
+        satuan.push(bahan[i])
+      }
     }
+
+    for (let i=0;i<satuan.length;i++) {
+      list[satuan[i]] = jumlah[i];
+      output.push(list)
+    }
+
+
+    return list;
   }
 }
 
 class PeanutButter extends Cookie {
-  constructor(name) {
-    super(name)
+  constructor(arr) {
+    super(arr)
     this.peanut_count = 100;
   }
 }
 
 class ChocholateChip extends Cookie {
-  constructor(name) {
-    super(name)
+  constructor(arr) {
+    super(arr)
     this.choc_chip_count = 200;
   }
 }
 
 class OtherCookie extends Cookie {
-  constructor(name) {
-    super(name)
+  constructor(arr) {
+    super(arr)
     this.other_count = 150;
   }
 }
 
 class ChocholateChipCrumble extends Cookie {
-  constructor(name) {
-    super(name);
+  constructor(arr) {
+    super(arr);
     this.chocolateChipCrumble_count = 300;
   }
 }
 
 class PeanutButterCrumble extends Cookie {
-  constructor(name) {
-    super(name);
+  constructor(arr) {
+    super(arr);
     this.butterCrumble_count = 300;
   }
 }
 
 class CookieFactory {
-  static create(options) {
+  static create(arr) {
     let cookie = null;
-    if (options === 'peanut butter') {
-      return new PeanutButter(options);
-    } else if (options === 'chocolate chip') {
-      return new ChocholateChip(options);
-    } else if (options === 'chocolate chips crumbled') {
-      return new ChocholateChipCrumble(options);
-    } else if (options === 'peanut butter crumbled') {
-      return new PeanutButterCrumble(options);
+    if (arr[0] === 'Peanut Butter') {
+      return new PeanutButter(arr);
+    } else if (arr[0] === 'Chocolate Chip') {
+      return new ChocholateChip(arr);
+    } else if (arr[0] === 'Chocolate Chips Crumbled') {
+      return new ChocholateChipCrumble(arr);
+    } else if (arr[0] === 'Peanut Butter Crumbled') {
+      return new PeanutButterCrumble(arr);
     } else {
-      return new OtherCookie(options);
+      return new OtherCookie(arr);
     }
   }
 
@@ -113,10 +112,12 @@ class CookieFactory {
 let file = 'cookies.txt';
 var fs = require('fs');
 let text = fs.readFileSync(file,'utf-8');
-let options = text.split('\n');
+let perbaris = text.split('\n');
+let options = perbaris.map(x => x.split('='))
 
 let batch_of_cookies = options.map(x=> CookieFactory.create(x));
 
 console.log(batch_of_cookies);
-let sugarFreeCookie = CookieFactory.cookieRecommendation('Selasa', batch_of_cookies);
-console.log(sugarFreeCookie);
+// let sugarFreeCookie = CookieFactory.cookieRecommendation('Selasa', batch_of_cookies);
+// console.log(sugarFreeCookie);
+

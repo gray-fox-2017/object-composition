@@ -1,6 +1,6 @@
-peanut butter
-chocolate chip
-chocolate cheese
-chocolate butter
-chocolate chips crumbled
-peanut butter crumbled
+Peanut Butter=1 cup:Flour,2 Cups (Gluten):Sugar,2 Cups:PeanutButter,1 Cup:Cinnamon,2 tsp:Butter
+Chocolate Chip=1 Cup:Chips,1 Cup:Sugar,2 tsp:Butter
+Chocolate Cheese=1 Cup:Flour,2 Cups:Sugar,2 Cups:Cinnamon,1 tblsp:Butter
+Chocolate Butter=1 Cup:GlutenFreeFlour,1 Cups:FlavorAdder,2 tsp:Butter
+Chocolate Chips Crumbled=1 Cup:Chips,2 Cups:Crumble,1 Cup:Sugar,2 tsp:Butter
+Peanut Butter Crumbled=1 cup:Flour,2 Cups:Crumble,2 Cups (Gluten):Sugar,2 Cups:PeanutButter,1 Cup:Cinnamon,2 tsp:Butter
