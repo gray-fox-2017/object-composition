@@ -20,7 +20,7 @@ class CookieFactory {
   static cookieRecommendation(dayName, cookieObj) {
     let freeSugar = [];
     for (let i = 0; i < cookieObj.length; i++) {
-      if (cookieObj[i].ingredient.has_sugar) {
+      if (!cookieObj[i].ingredient.has_sugar) {
         freeSugar.push(cookieObj[i]);
       }
     }
