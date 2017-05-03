@@ -38,7 +38,7 @@ class ChocolateChip extends Cookie {
 
 class OtherCookie extends Cookie {
   constructor(obj){
-    super()
+    super();
     this.name = obj.name;
     this.ingredients = obj.ingredients;
     this.other_count = 150;
@@ -51,14 +51,18 @@ class CookieFactory{
   static create(options){
 
     let batch = [];
+    let n =[];
+    let ing=[];
+    let cookieName,ingredients;
+
     options.pop();
 
-    //looping for cookies recept
-    for (let i = 0 ; i < options.length ; i++) {
-      let arrSplit = options[i].split(" = ")
-      let cookieName = arrSplit[0]; //peanut butter and others
-      let ingredients = arrSplit[1].split(', '); //1 cup : flour, 2 cups (gluten) : sugar, 2 cups : peanut butter, 1 cup : cinnamon, 2 tsp : butter and others
-      let listIngredients = [];
+    for(let i=0; i< options.length; i++){
+      n.push(options[i].match(/(\w+\s\w+)/))
+      ing.push(options[i].match(/(\d\s\w+ ?\D+ : +\w+ ?\w+ ?\w+)/g))
+      cookieName=n[i][0];
+      ingredients=ing.join("").split(",");
+      let listIngredients=[];
 
       //looping for ingredients
       for (let j = 0 ; j < ingredients.length ; j++) {
@@ -81,21 +85,23 @@ class CookieFactory{
         let cookie = new OtherCookie({name: cookieName, ingredients: listIngredients});
         batch.push(cookie);
       }
-
-    }
-
-    return batch;
   }
+
+
+  return batch;
 }
 
-  let fs = require('fs')
-  let options = fs.readFileSync('cookies.txt','utf8').toString().split('\n')
+}
 
-  var batch_of_cookies = CookieFactory.create(options)
-  console.log(batch_of_cookies)
+let fs = require('fs')
+let options = fs.readFileSync('cookies.txt','utf8').toString().split('\n')
 
-  // let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesda", batch_of_cookies);
-  // console.log("sugar free cakes are :");
-  // for(let i=0; i < sugarFreeFoods.length; i++){
-  //   console.log(sugarFreeFoods[i].name)
-  // }
+var batch_of_cookies = CookieFactory.create(options)
+console.log(batch_of_cookies)
+
+// let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batch_of_cookies);
+// console.log('\n')
+// console.log("sugar free cakes are :");
+// for(let i=0; i < sugarFreeFoods.length; i++){
+//   console.log(sugarFreeFoods[i].name)
+// }
