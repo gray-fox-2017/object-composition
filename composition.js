@@ -19,20 +19,20 @@ class Ingredients {
       this.Flour = 1;
       this.Sugar = 2;
       this.Cinnamon = 1;
-      this.Butter =0.05;
+      this.Butter = 0.05;
       this.PeanutButter = 2;
     } else if (name === 'chocolate chip') {
       this.Sugar = 1;
-      this.Butter =0.05;
+      this.Butter = 0.05;
       this.ChocoChips= 1;
     } else if (name === 'chocolate cheese') {
       this.Flour = 1;
       this.Sugar = 2;
       this.Cinnamon = 2;
-      this.Butter =0.06;
+      this.Butter = 0.06;
     } else if (name === 'chocolate butter') {
       this.Butter = 0.05;
-      this.GlutenFreeFlour= 1;
+      this.GlutenFreeFlour = 1;
       this.FlavorAdder = 1;
     } else if (name === 'chocolate chips crumbled') {
       this.Flour = 1;
