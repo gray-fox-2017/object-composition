@@ -86,22 +86,42 @@ class CookieFactory{
         batch.push(cookie);
       }
   }
-
-
   return batch;
 }
 
+
+  static cookieRecommendation(day,batch){
+
+    let commendBatch=[]
+
+
+  if(day==="tuesday"){
+    for(let i=0;i<batch.length;i++){
+      let sugar=false
+      for(let j=0;j<batch[i].ingredients.length;j++){
+        if(batch[i].ingredients[j].has_sugar){
+          sugar=true
+        }
+      }
+      if(sugar){
+        commendBatch.push(batch[i])
+      }
+    }
+  }
+    return commendBatch;
+  }
+
 }
 
-let fs = require('fs')
-let options = fs.readFileSync('cookies.txt','utf8').toString().split('\n')
+  let fs = require('fs')
+  let options = fs.readFileSync('cookies.txt','utf8').toString().split('\n')
 
-var batch_of_cookies = CookieFactory.create(options)
-console.log(batch_of_cookies)
+  var batch_of_cookies = CookieFactory.create(options)
+  console.log(batch_of_cookies)
 
-// let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batch_of_cookies);
-// console.log('\n')
-// console.log("sugar free cakes are :");
-// for(let i=0; i < sugarFreeFoods.length; i++){
-//   console.log(sugarFreeFoods[i].name)
-// }
+  let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batch_of_cookies);
+  console.log('\n')
+  console.log("sugar free cakes are :");
+  for(let i=0; i < sugarFreeFoods.length; i++){
+    console.log(sugarFreeFoods[i].name)
+  }
