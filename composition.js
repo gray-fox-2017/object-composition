@@ -5,6 +5,7 @@ let text = fs.readFileSync('cookies.txt').toString().split("\n")
 class Cookie {
   constructor() {
     this.status = "mentah"
+    this.ingredients = [];
   }
   bake(){
     this.status = "selesai dimasak"
@@ -38,18 +39,42 @@ class CookieFactory {
   static create(options){
     let result = [];
     let tmp = {}
+    //Split name and ingredients
+
     for (let i = 0; i < options.length; i++){
-      if (options[i] == 'peanut butter'){
+      let takeCokiieType = options[i].split("=");
+      let takeIngredients = takeCokiieType.splice(-1,1);
+      // console.log(takeIngredients[0].split(",").length);
+      if (options[i].split("=")[0].trim() == 'peanut butter'){
         tmp = new PeanutButter();
-      } else if (options[i] == 'chocolate chip'){
+        for (let z = 0; z < takeIngredients[0].split(",").length; z++){
+          let tmp_an_ing = new Object();
+          tmp_an_ing[takeIngredients[0].split(",")[z].split(":")[0]] = takeIngredients[0].split(",")[z].split(":")[1];
+          tmp.ingredients.push(JSON.stringify(tmp_an_ing).trim());
+        }
+      } else if (options[i].split("=")[0].trim() == 'chocolate chip'){
         tmp = new ChocolateChip();
-      } else if (options[i] !== 'chocolate chip' && options[i] !== 'peanut butter'){
+        for (let z = 0; z < takeIngredients[0].split(",").length; z++){
+          let tmp_an_ing = new Object();
+          tmp_an_ing[takeIngredients[0].split(",")[z].split(":")[0]] = takeIngredients[0].split(",")[z].split(":")[1];
+          tmp.ingredients.push(JSON.stringify(tmp_an_ing).trim());
+        }
+      } else if (options[i].split("=")[0].trim() !== 'chocolate chip' && options[i].split("=")[0].trim() !== 'peanut butter'){
         tmp = new OtherCookie();
+        for (let z = 0; z < takeIngredients[0].split(",").length; z++){
+          let tmp_an_ing = new Object();
+          tmp_an_ing[takeIngredients[0].split(",")[z].split(":")[0]] = takeIngredients[0].split(",")[z].split(":")[1];
+          tmp.ingredients.push(JSON.stringify(tmp_an_ing).trim());
+        }
       }
       //push to result;
       result.push(tmp);
     }
     return result;
+  }
+
+  static cookieRecomendation(){
+
   }
 }
 
@@ -57,4 +82,10 @@ class CookieFactory {
 let batch_of_cookies = CookieFactory.create(text);
 console.log(batch_of_cookies);
 
-// console.log(text[1]);
+let sugarFreeFoods = CookieFactory.cookieRecomendation("tuesday", batch_of_cookies);
+// console.log("sugar free cakes are");
+// for (let k = 0 ; k < sugarFreeFoods.length; k++){
+//   console.log(sugarFreeFoods[i].name);
+// }
+
+// console.log(text[0].split(","));
