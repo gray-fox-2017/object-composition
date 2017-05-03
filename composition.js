@@ -4,7 +4,7 @@ class Cookie {
   constructor(arr) {
     this.name = arr[0];
     this.status = "mentah";
-    this.ingredients = (new Ingredients(arr[1])).list;
+    this.ingredients = arr[1].split(',').map(x => x.split(':')).map(x => new Ingredients(x));
     ;
   }
 
@@ -15,35 +15,8 @@ class Cookie {
 
 class Ingredients {
   constructor(arr) {
-    this.bah = arr.split(',');
-    this.bahan = this.bah.map(x => x.split(':'));
-  }
-
-  get list() {
-    let bahanPertama = this.bahan.join(',');
-    let bahan = bahanPertama.split(',')
-    let output =[]
-
-    let satuan = [];
-    let jumlah = [];
-
-    let list = {};
-
-    for(let i=0; i<bahan.length;i++) {
-      if (i%2 === 0) {
-        jumlah.push(bahan[i])
-      } else {
-        satuan.push(bahan[i])
-      }
-    }
-
-    for (let i=0;i<satuan.length;i++) {
-      list[satuan[i]] = jumlah[i];
-      output.push(list)
-    }
-
-
-    return list;
+    this.nama = arr[1];
+    this.jumlah = arr[0];
   }
 }
 
@@ -101,7 +74,13 @@ class CookieFactory {
   static cookieRecommendation(hari, kue) {
     let list = [];
     for (let i=0; i<kue.length; i++) {
-      if (kue[i].ingredients.Sugar === undefined) {
+      let count = 0
+      for (let a=0; a<kue[i].ingredients.length; a++) {
+        if (kue[i].ingredients[a].nama === 'Sugar') {
+          count++
+        }
+      }
+      if (count === 0) {
         list.push(kue[i].name);
       }
     }
