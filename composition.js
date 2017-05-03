@@ -118,6 +118,6 @@ let options = perbaris.map(x => x.split('='))
 let batch_of_cookies = options.map(x=> CookieFactory.create(x));
 
 console.log(batch_of_cookies);
-// let sugarFreeCookie = CookieFactory.cookieRecommendation('Selasa', batch_of_cookies);
-// console.log(sugarFreeCookie);
+let sugarFreeCookie = CookieFactory.cookieRecommendation('Selasa', batch_of_cookies);
+console.log(sugarFreeCookie);
 
