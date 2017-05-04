@@ -19,6 +19,7 @@ class Cookie {
     for(let i = 0; i<resep.length; i++) {
       ingArr.push(new Ingredient(resep[i].split(':')));
     }
+    // console.log(resep);
     return ingArr;
   }
 
@@ -71,11 +72,22 @@ class CookieFactory {
     }
     return arr;
   }
+
+  static cookieRecommendation(day, cookie) {
+    let noSugar = []
+    for (let i = 0; i < cookie.length; i++) {
+      if (cookie[i].has_sugar == false) {
+        noSugar.push(cookie[i]);
+      }
+    }
+    return noSugar;
+  }
 }
 
 
 class Ingredient {
   constructor(opt) {
+    // console.log(opt);
     this.name = opt[1];
     this.amount = opt[0];
   }
@@ -101,13 +113,12 @@ for (let i = 0; i < inOptions.length; i++) {
 for (let j = 0; j < arrIngredients.length; j++) {
   bahanBahan.push(arrIngredients[j][1].split(','))
 }
-// for (let k = 0; k < bahanBahan.length; k++) {
-//   for (let l = 0; l < bahanBahan[k].length; l++) {
-//     bahanBahan[k][l] = bahanBahan[k][l].split(':');
-//   }
-// }
-let asd = CookieFactory.create(options);
-console.log(asd);
-// console.log(inOptions);
-// console.log(arrIngredients);
-// console.log(ingredients);
+let batch_of_cookies = CookieFactory.create(options);
+console.log(batch_of_cookies);
+
+let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batch_of_cookies)
+console.log('sugar free cakes are :');
+for (let m = 0; m < sugarFreeFoods.length; m++) {
+  console.log(sugarFreeFoods[m].name);
+}
+// console.log(JSON.stringify(batch_of_cookies,null,2));
