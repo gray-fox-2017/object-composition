@@ -21,9 +21,12 @@ class Cookie {
   }
 
   sugarContent() {
-    if(this.ingredients["sugar"] !== undefined) {
-      return true;
-    } else return false;
+    for(let i = 0; i < this.ingredients.length; i++) {
+      if(this.ingredients[i]["name"] == "sugar") {
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -45,15 +48,22 @@ class Ingredients {
 
   ingredientObject() {
     let konten = this.correctContent();
+    if(konten == undefined) {
+      return "no recipe found"
+    }
     let judulDanIsi = konten.split('=');
 
-    let obj = {};
+    let arr = [];
+
     let properties = judulDanIsi[1].split(',');
-    properties.forEach(function(property) {
-      var tup = property.split(':');
-      obj[tup[1].trim()] = tup[0].trim();
-    });
-    return obj
+
+    for(let i = 0; i < properties.length; i++) {
+      arr[i] = {};
+      let nameAndAmount = properties[i].split(':');
+      arr[i]["name"] = nameAndAmount[1].trim();
+      arr[i]["amount"] = nameAndAmount[0].trim();
+    }
+    return arr
   }
 }
 
@@ -94,7 +104,34 @@ class OtherCookie extends Cookie{
 
 class CookieFactory {
   static create(options) {
-    let cookiesMade;
+    if(typeof options == "string") {
+      return CookieFactory.addSingle(options);
+    }
+    let cookiesMade = [];
+    for(let i = 0; i < options.length; i++) {
+      switch (options[i]) {
+        case "chocolate chip":
+          cookiesMade[i] = new ChocolateChip();
+          break;
+        case "chocolate chip crumbled":
+          cookiesMade[i] = new ChocolateChipCrumbled();
+          break;
+        case "peanut butter":
+          cookiesMade[i] = new PeanutButter();
+          break;
+        default:
+          cookiesMade[i] = new OtherCookie();
+          break;
+      }
+      cookiesMade[i].name = options[i];
+      cookiesMade[i].fillIngredients();
+      cookiesMade[i].bake();
+    }
+    return cookiesMade;
+  }
+
+  static addSingle(options) {
+    let cookiesMade = ''
     switch (options) {
       case "chocolate chip":
         cookiesMade = new ChocolateChip();
@@ -111,9 +148,9 @@ class CookieFactory {
     }
     cookiesMade.name = options;
     cookiesMade.fillIngredients();
+    cookiesMade.bake();
     return cookiesMade;
   }
-
   static cookieRecomendation(day, arrayOfCookies) {
     let recommendationResult = [];
     switch (day) {
@@ -135,16 +172,15 @@ let ingredients = fs.readFileSync("ingredients.txt", "utf-8");
 orders = orders.split('\n');
 ingredients = ingredients.split('\n');
 
-let batch_of_cookies = [];
-for(let i = 0; i < orders.length; i++) {
-  batch_of_cookies.push(CookieFactory.create(orders[i]))
-}
+let batch_of_cookies = CookieFactory.create(orders);
 
-batch_of_cookies.push(CookieFactory.create("chocolate chip crumbled"))
+batch_of_cookies.push(CookieFactory.create("chocolate cheese"))
 console.log(batch_of_cookies)
-
 let sugarFreeFoods = CookieFactory.cookieRecomendation("tuesday", batch_of_cookies)
 console.log("sugar free cakes are: ")
 for(let i = 0; i < sugarFreeFoods.length; i++) {
   console.log(sugarFreeFoods[i].name)
 }
+
+
+console.log(batch_of_cookies[0].ingredients.length)
