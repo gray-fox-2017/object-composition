@@ -5,7 +5,6 @@ class Cookie {
     this.name = arr[0];
     this.status = "mentah";
     this.ingredients = arr[1].split(',').map(x => x.split(':')).map(x => new Ingredients(x));
-    ;
   }
 
   bake() {
