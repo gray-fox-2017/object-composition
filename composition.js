@@ -20,6 +20,8 @@ class Cookie {
   bake() {
     this.status = 'selesai dimasak'
   }
+
+
 }
 
 class PeanutButter extends Cookie {
@@ -66,7 +68,33 @@ class CookieFactory {
 
     return tamp
   }
+
+  static cookieRecommendation(day, arr){
+  let sugarfree = arr;
+  if (day === "tuesday") {
+
+    for(let i = sugarfree.length-1; i >= 0; i--) {
+      for(let j = 0; j < sugarfree[i].bahan.length; j++) {
+        if(sugarfree[i].bahan[j].name === 'sugar') {
+          sugarfree.splice(i,1);
+          break;
+        }
+      }
+    }
+
+  }
+  return sugarfree;
 }
+
+  sugar() {
+    if (this.bahan[1].name === 'sugar') {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
 
 
 class Ingredient {
@@ -112,3 +140,12 @@ updateData()
 //console.log(options);
 let batch_of_cookies = CookieFactory.create(txtCookies)
 console.log(batch_of_cookies);
+
+let sugarFreeFoods = CookieFactory.cookieRecommendation("tuesday", batch_of_cookies);
+console.log("-------------------------------------");
+console.log("sugar free cakes are :");
+
+for(let i = 0; i < sugarFreeFoods.length; i++){
+  console.log(sugarFreeFoods[i].name)
+}
+
