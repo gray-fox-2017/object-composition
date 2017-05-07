@@ -183,4 +183,4 @@ for(let i = 0; i < sugarFreeFoods.length; i++) {
 }
 
 
-console.log(batch_of_cookies[0].ingredients.length)
+console.log(batch_of_cookies[0].ingredients)

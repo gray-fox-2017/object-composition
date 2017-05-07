@@ -160,6 +160,6 @@ for(let i = 0; i < sugarFreeFoods.length; i++) {
   console.log(sugarFreeFoods[i].name)
 }
 
-// console.log(batch_of_cookies[1].ingredients)
+console.log(batch_of_cookies[1].ingredients)
 
 // console.log(batch_of_cookies[0].objectifyIngredients("chocolate butter"))
