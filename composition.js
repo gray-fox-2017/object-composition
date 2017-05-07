@@ -33,7 +33,7 @@ class CookieFactory {
     debugger
     if (day.toLowerCase() === "tuesday") {
       for (let i=0; i<batch_of_cookies.length;i++) {
-        if (batch_of_cookies[i].has_sugar === false) {
+        if (batch_of_cookies[i].ingredients.has_sugar === false) {
           sugarFreeFoods.push(batch_of_cookies[i].name);
         }
       }
@@ -47,14 +47,9 @@ class Cookie {
   constructor (name) {
     this.name = name;
     this.status = 'mentah';
-    this.amount = 0;
-    this.has_sugar = true;
     this.ingredients = new Ingredients(this);
-    this.has_sugar = this.ingredients.is_there_sugar();
-    //console.log(this.ingredients.ingredient);
-    //this.ingredients = this.ingredients.ingredient;
-    this.ingredients = this.ingredients.obtainIngredients();
   }
+  
   bake() {
     this.status = 'selesai dimasak';
   }
@@ -63,28 +58,30 @@ class Cookie {
 class PeanutButter extends Cookie {
   constructor(name) {
     super(name);
-    this.amount = 100;
+    this.peanut_count = 100;
   }
 }
 
 class ChocolateChip extends Cookie {
   constructor(name) {
     super(name);
-    this.amount = 200;
+    this.choc_chip_count = 200;
   }
 }
 
 class OtherCookies extends Cookie {
   constructor(name) {
     super(name);
-    this.amount = 150;
+    this.other_count = 150;
   }
 }
 
 class Ingredients {
   constructor(options) {
     this.name = options['name'];
-    this.ingredient = this.obtainIngredients();
+    this.amount = options['amount'];
+    this.obtainIngredients();
+    this.has_sugar = this.is_there_sugar();
   }
 
   obtainIngredients () {
@@ -103,18 +100,24 @@ class Ingredients {
 
     // move the ingredients to an object
     let ingredient = {};
+    this.name = [];
+    this.amount = [];
 
     ingredientList[cookieIndex][1] = ingredientList[cookieIndex][1].split(", ");
+    
     for (let j=0; j<ingredientList[cookieIndex][1].length; j++) {
       ingredientList[cookieIndex][1][j] = ingredientList[cookieIndex][1][j].split(": ");
       ingredient[ingredientList[cookieIndex][1][j][0]] = ingredientList[cookieIndex][1][j][1];
     }
 
-    return ingredient;
+    for (let key in ingredient) {
+      this.name.push(key);
+      this.amount.push(ingredient[key]);
+    }
   }
 
   is_there_sugar() {
-    return (!this.ingredient['sugar']) ? false : true;
+    return (this.name.includes('sugar')) ? true : false;
   }
 }
 
