@@ -51,9 +51,10 @@ class PeanutButter extends Cookie {
   }
 }
 
-class PeanutButterCrumbled extends PeanutButter {
+class PeanutButterCrumbled extends Cookie {
   constructor() {
     super();
+    this.peanut_count = 100;
     this.crumbled = true;
   }
 }
@@ -65,9 +66,10 @@ class ChocolateChip extends Cookie {
   }
 }
 
-class ChocolateChipCrumbled extends PeanutButter {
+class ChocolateChipCrumbled extends Cookie {
   constructor() {
     super();
+    this.choc_chip_count = 200;
     this.crumbled = true;
   }
 }
