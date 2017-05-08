@@ -15,7 +15,8 @@ class Cookie {
       if(nameCake[0] == name){
         let recipe = nameCake[1].split(', ') // split every ingredient
         for (let j=0; j<recipe.length; j++){
-          let ing = new Ingredient(options) // make new object from class Ingredient
+          console.log('------------', options);
+          let ing = new Ingredient() // make new object from class Ingredient
           ing.name=recipe[j].split(': ')[1] // ingredient name
           ing.amount=recipe[j].split(': ')[0] // ingredient amount
           if(/sugar/.test(recipe[j].split(': ')[1])){
@@ -69,10 +70,10 @@ class OtherCookie extends Cookie {
 
 
 class Ingredient {
-  constructor(options) {
-    this.name = options['name']
-    this.amount = options['amount']
-    this.has_sugar = options['has_sugar']
+  constructor() {
+    this.name = null
+    this.amount = null
+    this.has_sugar = null
   }
 }
 
