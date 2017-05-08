@@ -2,68 +2,45 @@
 
 class Cookie {
   constructor() {
-    this.name = '';
     this.status = "mentah";
-    this.ingredients = this.fillIngredients();
-    this.has_sugar = true;
     this.crumbled = false;
   }
 
   bake() {
     this.status = "selesai dimasak"
   }
-
-  fillIngredients() {
-    this.ingredients = new Ingredients(this.name)
-    this.ingredients = this.ingredients.component;
-
-    this.has_sugar = this.sugarContent();
-  }
-
-  sugarContent() {
-    for(let i = 0; i < this.ingredients.length; i++) {
-      if(this.ingredients[i]["name"] == "sugar") {
-        return true;
-      }
-    }
-    return false;
-  }
 }
 
 class Ingredients {
-  constructor(typeOfCookie) {
-    this.name = typeOfCookie;
-    this.component = this.ingredientObject();
+  constructor(options) {
+    let object = this.objectifyIngredients(options)
+    this.name = object.name;
+    this.amount = object.amount;
+    this.has_sugar = object.has_sugar;
   }
 
-  correctContent() {
+  objectifyIngredients(options) {
     let lineYangTepat;
     for(let i = 0; i < ingredients.length; i++) {
-      if(ingredients[i].includes(this.name)) {
+      if(ingredients[i].includes(options)) {
         lineYangTepat = ingredients[i];
       }
     }
-    return lineYangTepat;
-  }
+    let judulDanIsi = lineYangTepat.split('=');
+    let isi = judulDanIsi[1].split(',')
 
-  ingredientObject() {
-    let konten = this.correctContent();
-    if(konten == undefined) {
-      return "no recipe found"
+    let object = {};
+    object.name = [];
+    object.amount = [];
+    for(let i = 0; i < isi.length; i++) {
+      let nameAndAmount = isi[i].split(':')
+      object.name.push(nameAndAmount[1].trim())
+      object.amount.push(nameAndAmount[0].trim())
     }
-    let judulDanIsi = konten.split('=');
 
-    let arr = [];
-
-    let properties = judulDanIsi[1].split(',');
-
-    for(let i = 0; i < properties.length; i++) {
-      arr[i] = {};
-      let nameAndAmount = properties[i].split(':');
-      arr[i]["name"] = nameAndAmount[1].trim();
-      arr[i]["amount"] = nameAndAmount[0].trim();
-    }
-    return arr
+    object.has_sugar = true;
+    if(!object.name.includes("sugar")) object.has_sugar = false;
+    return object;
   }
 }
 
@@ -74,9 +51,10 @@ class PeanutButter extends Cookie {
   }
 }
 
-class PeanutButterCrumbled extends PeanutButter {
+class PeanutButterCrumbled extends Cookie {
   constructor() {
     super();
+    this.peanut_count = 100;
     this.crumbled = true;
   }
 }
@@ -88,9 +66,10 @@ class ChocolateChip extends Cookie {
   }
 }
 
-class ChocolateChipCrumbled extends PeanutButter {
+class ChocolateChipCrumbled extends Cookie {
   constructor() {
     super();
+    this.choc_chip_count = 200;
     this.crumbled = true;
   }
 }
@@ -124,7 +103,7 @@ class CookieFactory {
           break;
       }
       cookiesMade[i].name = options[i];
-      cookiesMade[i].fillIngredients();
+      cookiesMade[i].ingredients = new Ingredients(cookiesMade[i].name)
       cookiesMade[i].bake();
     }
     return cookiesMade;
@@ -147,7 +126,7 @@ class CookieFactory {
         break;
     }
     cookiesMade.name = options;
-    cookiesMade.fillIngredients();
+    cookiesMade.ingredients = new Ingredients(cookiesMade.name)
     cookiesMade.bake();
     return cookiesMade;
   }
@@ -156,7 +135,7 @@ class CookieFactory {
     switch (day) {
       case "tuesday":
         for(let i = 0; i < arrayOfCookies.length; i++) {
-          if(!arrayOfCookies[i].has_sugar) recommendationResult.push(arrayOfCookies[i])
+          if(!arrayOfCookies[i].ingredients.has_sugar) recommendationResult.push(arrayOfCookies[i])
         }
         break;
       default:
@@ -174,13 +153,15 @@ ingredients = ingredients.split('\n');
 
 let batch_of_cookies = CookieFactory.create(orders);
 
-batch_of_cookies.push(CookieFactory.create("chocolate cheese"))
+batch_of_cookies.push(CookieFactory.create("chocolate chip crumbled"))
 console.log(batch_of_cookies)
+
 let sugarFreeFoods = CookieFactory.cookieRecomendation("tuesday", batch_of_cookies)
 console.log("sugar free cakes are: ")
 for(let i = 0; i < sugarFreeFoods.length; i++) {
   console.log(sugarFreeFoods[i].name)
 }
 
+console.log(batch_of_cookies[1].ingredients)
 
-console.log(batch_of_cookies[0].ingredients)
+// console.log(batch_of_cookies[0].objectifyIngredients("chocolate butter"))
