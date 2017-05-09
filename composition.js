@@ -115,7 +115,7 @@ let fs = require("fs");
 var tmp = fs.readFileSync("cookies.txt","utf-8").split("\n");
 
 let batch_of_cookies = CookieFactory.create(tmp);
-console.log(batch_of_cookies);
+console.log(JSON.stringify(batch_of_cookies,null,2));
 
 let sugarFreeFoods = CookieFactory.cookie_Recommendation('tuesday', batch_of_cookies)
 console.log('sugar free cakes are: ')
